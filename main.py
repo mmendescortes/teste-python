@@ -5,7 +5,7 @@ from sys import exit
 from re import split
 from os import path as path
 
-twitter_token = "AAAAAAAAAAAAAAAAAAAAANNBiAEAAAAArtzWVGRSyjxDsVV321J4UjnyH0s%3DT6O492KBj5bDql1NuPeZ7p2tkbaNHA91Bm8f0IiLEDgWipalJ3"
+twitter_token = "REPLACE_WITH_YOUR_TWITTER_BEARER_TOKEN"
 
 if not path.exists("AppleStore.csv"):
   exit(
@@ -37,9 +37,12 @@ for index, item in enumerate(sorted_data.track_name):
     "n_citacoes": search.meta["result_count"]
   }
   result.append(dict)
+  
 result_df = pandas.DataFrame(result)
-result_df.to_csv("Result.csv", sep=',', index=False)
-result_df.to_json('Result.json', orient="records")
-con = db.connect('Result.sqlite')
-result_df.to_sql(name='Result', con=con)
+
+result_df.to_csv("Result.csv", sep=",", index=False)
+result_df.to_json("Result.json", orient="records")
+
+con = db.connect("Result.sqlite")
+result_df.to_sql(name="Result", con=con, if_exists="replace")
 con.close()
